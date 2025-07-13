@@ -1,10 +1,6 @@
 import { build } from 'esbuild';
-import pkg from 'esbuild-style-plugin';
-const { stylePlugin } = pkg;
 import { rimraf } from 'rimraf';
 import fs from 'fs';
-import tailwindcss from 'tailwindcss';
-import autoprefixer from 'autoprefixer';
 
 const isProduction = process.argv.includes('--production');
 
@@ -34,17 +30,8 @@ try {
     define: {
       'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
     },
-    plugins: [
-      stylePlugin({
-        postcss: {
-          plugins: [
-            tailwindcss,
-            autoprefixer,
-          ],
-        },
-      }),
-    ],
     loader: {
+      '.css': 'css',
       '.png': 'dataurl',
       '.jpg': 'dataurl',
       '.jpeg': 'dataurl',
@@ -62,13 +49,14 @@ try {
 
   console.log('✅ JavaScript build completed');
 
-  // Create index.html
+  // Create index.html with embedded TailwindCSS
   const htmlContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SQ Invest Limited - CRM Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: system-ui, sans-serif; background: #f8fafc; }
