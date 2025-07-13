@@ -10,7 +10,10 @@ interface UpcomingTasksProps {
   tasks: Task[];
 }
 
-export const UpcomingTasks: React.FC<UpcomingTasksProps> = ({ tasks }) => {
+/**
+ * Component to display upcoming tasks
+ */
+const UpcomingTasks: React.FC<UpcomingTasksProps> = ({ tasks }) => {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high':
@@ -64,3 +67,5 @@ export const UpcomingTasks: React.FC<UpcomingTasksProps> = ({ tasks }) => {
     </div>
   );
 };
+
+export default UpcomingTasks;

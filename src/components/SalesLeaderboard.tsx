@@ -3,40 +3,37 @@
  */
 import React from 'react';
 import { Trophy, TrendingUp, User } from 'lucide-react';
+import { useUserData } from '../contexts/UserDataContext';
 
+/**
+ * Sales Leaderboard component displaying top sales performers
+ */
 const SalesLeaderboard: React.FC = () => {
-  const salesData = [
-    {
-      rank: 1,
-      name: 'Truckers',
-      deals: 8,
-      revenue: '£1,450K',
-      conversion: '62%',
-      monthlyDeals: 2,
-      status: 'CHAMPION',
-      trend: 'up'
-    },
-    {
-      rank: 2,
-      name: 'Squire',
-      deals: 6,
-      revenue: '£890K',
-      conversion: '48%',
-      monthlyDeals: 1,
-      status: 'RISING',
-      trend: 'up'
-    },
-    {
-      rank: 3,
-      name: 'M1',
-      deals: 4,
-      revenue: '£650K',
-      conversion: '42%',
-      monthlyDeals: 1,
-      status: 'STEADY',
-      trend: 'up'
-    }
-  ];
+  const { systemUsers } = useUserData();
+  
+  const salesData = systemUsers
+    ?.filter(user => ['board', 'management', 'sales'].includes(user.accessLevel))
+    .map((user, index) => {
+      const performanceData = [
+        { deals: 8, revenue: '£1,450K', conversion: '62%', monthlyDeals: 2, status: 'CHAMPION' },
+        { deals: 6, revenue: '£890K', conversion: '48%', monthlyDeals: 1, status: 'RISING' },
+        { deals: 4, revenue: '£650K', conversion: '42%', monthlyDeals: 1, status: 'STEADY' }
+      ];
+      
+      const performance = performanceData[index] || { deals: 3, revenue: '£500K', conversion: '35%', monthlyDeals: 1, status: 'STEADY' };
+      
+      return {
+        rank: index + 1,
+        name: user.name,
+        deals: performance.deals,
+        revenue: performance.revenue,
+        conversion: performance.conversion,
+        monthlyDeals: performance.monthlyDeals,
+        status: performance.status,
+        trend: 'up'
+      };
+    })
+    .slice(0, 3) || [];
 
   const getRankColor = (rank: number) => {
     switch (rank) {
@@ -121,6 +118,13 @@ const SalesLeaderboard: React.FC = () => {
           </div>
         ))}
       </div>
+
+      {salesData.length === 0 && (
+        <div className="text-center py-8">
+          <Trophy className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+          <p className="text-gray-500">No sales data available</p>
+        </div>
+      )}
     </div>
   );
 };

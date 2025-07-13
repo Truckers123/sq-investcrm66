@@ -9,7 +9,10 @@ interface InvestmentTypesSummaryProps {
   investmentTypes: InvestmentType[];
 }
 
-export const InvestmentTypesSummary: React.FC<InvestmentTypesSummaryProps> = ({ investmentTypes }) => {
+/**
+ * Component to display investment types summary
+ */
+const InvestmentTypesSummary: React.FC<InvestmentTypesSummaryProps> = ({ investmentTypes }) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
@@ -23,3 +26,5 @@ export const InvestmentTypesSummary: React.FC<InvestmentTypesSummaryProps> = ({ 
     </div>
   );
 };
+
+export default InvestmentTypesSummary;

@@ -13,14 +13,18 @@ interface LoginUser {
   department: string;
   avatar?: string;
   permissions: string[];
+  accessLevel: 'board' | 'management' | 'sales' | 'administration' | 'technical_operations';
   lastLogin?: string;
   status: 'active' | 'inactive';
+  canDelete?: boolean;
+  requiresTwoFA?: boolean;
 }
 
 interface AuthContextType {
   user: LoginUser | null;
   login: (user: LoginUser) => void;
   logout: () => void;
+  updateUser: (updatedUser: LoginUser) => void;
   isAuthenticated: boolean;
   hasPermission: (permission: string) => boolean;
 }
@@ -66,6 +70,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('sqpv_user');
   };
 
+  const updateUser = (updatedUser: LoginUser) => {
+    setUser(updatedUser);
+    localStorage.setItem('sqpv_user', JSON.stringify(updatedUser));
+  };
+
   const isAuthenticated = !!user;
 
   const hasPermission = (permission: string): boolean => {
@@ -78,6 +87,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     user,
     login,
     logout,
+    updateUser,
     isAuthenticated,
     hasPermission
   };

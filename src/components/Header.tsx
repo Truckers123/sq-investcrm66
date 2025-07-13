@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Bell, Users, BarChart3, Calendar, CheckSquare, Mail, Menu, X, LogOut, User, Building, MessageSquare } from 'lucide-react';
+import { Bell, Users, BarChart3, Calendar, CheckSquare, Mail, Menu, X, LogOut, User, Building, MessageSquare, FileText, Settings, Star } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -46,8 +46,13 @@ export default function Header() {
   const navigationItems = [
     { name: 'Dashboard', path: '/', icon: BarChart3 },
     { name: 'Contacts', path: '/contacts', icon: Users },
+    { name: 'Tasks', path: '/tasks', icon: CheckSquare },
+    { name: 'Calendar', path: '/calendar', icon: Calendar },
+    { name: 'Information', path: '/information', icon: FileText },
     { name: 'Messages', path: '/messages', icon: MessageSquare },
-    { name: 'Email', path: '/email', icon: Mail }
+    { name: 'Email', path: '/email', icon: Mail },
+    { name: 'Settings', path: '/settings', icon: Settings },
+    { name: 'Feedback', path: '/feedback', icon: Star }
   ];
 
   return (

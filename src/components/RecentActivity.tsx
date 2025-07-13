@@ -10,7 +10,10 @@ interface RecentActivityProps {
   activities: ActivityItem[];
 }
 
-export const RecentActivity: React.FC<RecentActivityProps> = ({ activities }) => {
+/**
+ * Component to display recent activities in the CRM system
+ */
+const RecentActivity: React.FC<RecentActivityProps> = ({ activities }) => {
   const getIcon = (type: string) => {
     switch (type) {
       case 'lead':
@@ -58,3 +61,5 @@ export const RecentActivity: React.FC<RecentActivityProps> = ({ activities }) =>
     </div>
   );
 };
+
+export default RecentActivity;

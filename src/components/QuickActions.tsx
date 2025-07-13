@@ -2,7 +2,7 @@
  * QuickActions component for common CRM tasks
  */
 import React from 'react';
-import { UserPlus, Plus, Calendar, BarChart3, FileText, Phone, Mail, Settings } from 'lucide-react';
+import { UserPlus, Plus, Calendar, BarChart3, FileText, Phone, Mail, MessageSquare, Settings } from 'lucide-react';
 
 const QuickActions: React.FC = () => {
   const actions = [
@@ -64,6 +64,14 @@ const QuickActions: React.FC = () => {
     },
     {
       id: 8,
+      name: 'Send Message',
+      description: 'Send internal message',
+      icon: MessageSquare,
+      color: 'cyan',
+      shortcut: 'Ctrl+Q'
+    },
+    {
+      id: 9,
       name: 'Settings',
       description: 'Configure system settings',
       icon: Settings,
@@ -81,6 +89,7 @@ const QuickActions: React.FC = () => {
       teal: 'bg-teal-50 hover:bg-teal-100 border-teal-200',
       indigo: 'bg-indigo-50 hover:bg-indigo-100 border-indigo-200',
       pink: 'bg-pink-50 hover:bg-pink-100 border-pink-200',
+      cyan: 'bg-cyan-50 hover:bg-cyan-100 border-cyan-200',
       gray: 'bg-gray-50 hover:bg-gray-100 border-gray-200'
     };
     return colors[color as keyof typeof colors] || colors.blue;
@@ -95,6 +104,7 @@ const QuickActions: React.FC = () => {
       teal: 'text-teal-600',
       indigo: 'text-indigo-600',
       pink: 'text-pink-600',
+      cyan: 'text-cyan-600',
       gray: 'text-gray-600'
     };
     return colors[color as keyof typeof colors] || colors.blue;
@@ -107,7 +117,7 @@ const QuickActions: React.FC = () => {
         <p className="text-sm text-gray-600">Frequently used CRM functions</p>
       </div>
       
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {actions.map((action) => {
           const Icon = action.icon;
           return (
