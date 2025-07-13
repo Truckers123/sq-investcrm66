@@ -1,6 +1,8 @@
 import { build } from 'esbuild';
-import { stylePlugin } from 'esbuild-style-plugin';
+import pkg from 'esbuild-style-plugin';
+const { stylePlugin } = pkg;
 import { rimraf } from 'rimraf';
+
 import fs from 'fs';
 import path from 'path';
 
