@@ -16,7 +16,6 @@ try {
 
 // Ensure dist directory exists
 fs.mkdirSync('dist', { recursive: true });
-fs.mkdirSync('dist/assets', { recursive: true });
 
 try {
   // Build the application
@@ -26,7 +25,7 @@ try {
     minify: isProduction,
     sourcemap: !isProduction,
     target: ['es2020'],
-    outfile: 'dist/assets/main.js',
+    outdir: 'dist',
     define: {
       'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
     },
@@ -43,13 +42,14 @@ try {
       '.ttf': 'dataurl',
     },
     format: 'iife',
-    globalName: 'App',
     jsx: 'automatic',
+    resolveExtensions: ['.tsx', '.ts', '.jsx', '.js'],
+    external: []
   });
 
   console.log('✅ JavaScript build completed');
 
-  // Create index.html with embedded TailwindCSS
+  // Create index.html
   const htmlContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,7 +85,7 @@ try {
     </div>
   </div>
   <div id="root"></div>
-  <script src="/assets/main.js"></script>
+  <script src="/main.js"></script>
   <script>
     window.addEventListener('load', () => {
       setTimeout(() => {
@@ -95,20 +95,3 @@ try {
           loading.style.transition = 'opacity 0.5s ease';
           setTimeout(() => loading.remove(), 500);
         }
-      }, 1000);
-    });
-  </script>
-</body>
-</html>`;
-
-  fs.writeFileSync('dist/index.html', htmlContent);
-  fs.writeFileSync('dist/404.html', htmlContent);
-
-  console.log('✅ HTML files created');
-  console.log('🚀 Build completed successfully!');
-  console.log('📁 Output directory: dist/');
-
-} catch (error) {
-  console.error('❌ Build failed:', error);
-  process.exit(1);
-}
