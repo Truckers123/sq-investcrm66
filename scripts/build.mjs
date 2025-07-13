@@ -1,49 +1,50 @@
 import { build } from 'esbuild'
-import { stylePlugin } from 'esbuild-style-plugin'
-import { rimraf } from 'rimraf'
-import { readFileSync } from 'fs'
+import pkg from 'esbuild-style-plugin'
+const { stylePlugin } = pkg
 
 const isProduction = process.argv.includes('--production')
 
-// Clean dist directory
-await rimraf('dist')
-
-// Read package.json for dependencies
-const pkg = JSON.parse(readFileSync('package.json', 'utf8'))
-
-await build({
+const config = {
   entryPoints: ['src/main.tsx'],
   bundle: true,
   outdir: 'dist',
   format: 'esm',
   platform: 'browser',
-  target: 'es2020',
-  minify: isProduction,
-  sourcemap: !isProduction,
+  target: ['es2020'],
+  jsx: 'automatic',
+  jsxImportSource: 'react',
   define: {
-    'process.env.NODE_ENV': isProduction ? '"production"' : '"development"'
+    'process.env.NODE_ENV': isProduction ? '"production"' : '"development"',
   },
   plugins: [
     stylePlugin({
       postcss: {
         plugins: [
           require('tailwindcss'),
-          require('autoprefixer')
-        ]
-      }
-    })
+          require('autoprefixer'),
+        ],
+      },
+    }),
   ],
-  external: [],
   loader: {
-    '.tsx': 'tsx',
-    '.ts': 'tsx',
-    '.jsx': 'jsx',
-    '.js': 'jsx'
+    '.png': 'file',
+    '.jpg': 'file',
+    '.jpeg': 'file',
+    '.gif': 'file',
+    '.svg': 'file',
+  },
+  minify: isProduction,
+  sourcemap: !isProduction,
+  external: [],
+}
+
+if (!isProduction) {
+  config.watch = {
+    onRebuild(error, result) {
+      if (error) console.error('watch build failed:', error)
+      else console.log('watch build succeeded:', result)
+    },
   }
-})
+}
 
-// Copy HTML file
-import { copyFileSync } from 'fs'
-copyFileSync('index.html', 'dist/index.html')
-
-console.log('Build completed successfully!')
+build(config).catch(() => process.exit(1))
