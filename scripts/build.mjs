@@ -1,14 +1,7 @@
 import { build } from 'esbuild';
-import pkg from 'esbuild-style-plugin';
-const { stylePlugin } = pkg;
 import { rimraf } from 'rimraf';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const isProduction = process.argv.includes('--production');
 
@@ -30,18 +23,8 @@ try {
     define: {
       'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
     },
-    plugins: [
-      stylePlugin({
-        postcss: {
-          plugins: [
-            // Import tailwindcss and autoprefixer as ES modules
-            (await import('tailwindcss')).default,
-            (await import('autoprefixer')).default,
-          ],
-        },
-      }),
-    ],
     loader: {
+      '.css': 'css',
       '.png': 'dataurl',
       '.jpg': 'dataurl',
       '.jpeg': 'dataurl',
@@ -150,8 +133,6 @@ try {
 </html>`;
 
   fs.writeFileSync('dist/index.html', htmlTemplate);
-
-  // Create a simple 404 fallback
   fs.writeFileSync('dist/404.html', htmlTemplate);
 
   console.log('✅ Production build completed successfully!');
